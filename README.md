@@ -1,3 +1,4 @@
+console.log("Script is running!");
 <!DOCTYPE html>
 <html lang="en">
 <head>
