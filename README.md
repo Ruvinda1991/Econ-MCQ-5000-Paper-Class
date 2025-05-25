@@ -42,4 +42,21 @@
                 default: "Sorry, I didn't understand. Try 'courses', 'mcq', 'schedule', 'tips', or 'register'."
             },
             si: {
-                greeting: "MCQ 5000 Paper Class වෙත සාදරයෙන්! Facebook හි දැන්වීම දුට
+                greeting: "MCQ 5000 Paper Class වෙත සාදරයෙන්! Facebook හි දැන්වීම දුටුවාද? 2025 විභාග, 2026 පුනරීක්ෂණ, 2027 න්‍යාය සඳහා උපකාර කරමි. 'පාඨමාලා', 'mcq', 'කාලසටහන', 'ඉඟි', හෝ 'ලියාපදිංචි' ටයිප් කරන්න.",
+                courses: "2025 විභාග, 2026 පුනරීක්ෂණ, 2027 න්‍යාය මට්ටම් සඳහා පාඨමාලා. Competency 01 ඇතුළුව. ඔබට උනන්දුවක් ඇත්තේ කුමන මට්ටමද?",
+                mcq: "MCQ: හිඟකමට හේතුව? A) අසීමිත ආශා B) සීමිත සම්පත් C) ඉහළ මිල D) අඩු ඉල්ලුම E) රජයේ ප්‍රතිපත්ති. 'පිළිතුර B' හෝ 'තවත් mcq' ටයිප් කරන්න.",
+                schedule: "කාලසටහන්: සඳු-සිකු, ප.ව. 4, 5, 6. 'කාලසටහන සඳු 4 PM 2025' ටයිප් කරන්න.",
+                tips: "2025: පසුගිය ප්‍රශ්න පුහුණු. 2026: දුර්වල ක්ෂේත්ර. 2027: සංකල්ප. මට්ටමක ඉඟි අවශ්‍යද?",
+                register: "නම, ඊමේල්, සහ මට්ටම (2025, 2026, හෝ 2027) සපයන්න.",
+                default: "සමාවන්න, තේරුම් ගත නොහැක. 'පාඨමාලා', 'mcq', 'කාලසටහන', 'ඉඟි', හෝ 'ලියාපදිංචි' ටයිප් කරන්න."
+            }
+        };
+        let currentLanguage = languageSelect.value;
+        appendMessage('AI', responses[currentLanguage].greeting);
+        languageSelect.addEventListener('change', () => { currentLanguage = languageSelect.value; chatbox.innerHTML = ''; appendMessage('AI', responses[currentLanguage].greeting); });
+        function appendMessage(sender, message) { const messageDiv = document.createElement('div'); messageDiv.className = `p-2 ${sender === 'AI' ? 'text-blue-600' : 'text-gray-800 font-semibold'} ${currentLanguage === 'si' ? 'font-noto-serif-sinhala' : ''}`; messageDiv.textContent = `${sender}: ${message}`; chatbox.appendChild(messageDiv); chatbox.scrollTop = chatbox.scrollHeight; }
+        function sendMessage() { const userMessage = userInput.value.trim().toLowerCase(); if (!userMessage) return; appendMessage('You', userMessage); userInput.value = ''; let aiResponse = responses[currentLanguage].default; if (userMessage.includes('course') || userMessage.includes('පාඨමාලා')) aiResponse = responses[currentLanguage].courses; else if (userMessage.includes('mcq')) aiResponse = responses[currentLanguage].mcq; else if (userMessage.includes('schedule') || userMessage.includes('කාලසටහන') || userMessage.includes('pm')) aiResponse = responses[currentLanguage].schedule; else if (userMessage.includes('tips') || userMessage.includes('ඉඟි')) aiResponse = responses[currentLanguage].tips; else if (userMessage.includes('register') || userMessage.includes('ලියාපදිංචි')) aiResponse = responses[currentLanguage].register; else if (userMessage.includes('mon') || userMessage.includes('tue') || userMessage.includes('wed') || userMessage.includes('thu') || userMessage.includes('fri') || userMessage.includes('සඳු') || userMessage.includes('අඟ') || userMessage.includes('බදා') || userMessage.includes('බ්‍රහ') || userMessage.includes('සිකු')) aiResponse = currentLanguage === 'en' ? `Great! You've booked ${userMessage.toUpperCase()}. We'll confirm via email soon.` : `විශිෂ්ටයි! ඔබ ${userMessage.toUpperCase()} වෙන් කර ඇත. ඉක්මනින් ඊමේල් හරහා තහවුරු කරමු.`; else if (userMessage.includes('answer') || userMessage.includes('පිළිතුර')) aiResponse = currentLanguage === 'en' ? `Thanks for your answer! Type 'more mcq' for another question.` : `ඔබේ පිළිතුරට ස්තුතියි! 'තවත් mcq' ටයිප් කරන්න.`; else if (userMessage.includes('name') || userMessage.includes('email') || userMessage.includes('නම') || userMessage.includes('ඊමේල්')) aiResponse = currentLanguage === 'en' ? `Thank you for registering! We'll reach out to confirm your details.` : `ලියාපදිංචි වීමට ස්තුතියි! ඔබේ විස්තර තහවුරු කිරීමට අපි ඉක්මනින් සම්බන්ධ වෙමු.`; setTimeout(() => appendMessage('AI', aiResponse), 500); }
+        userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+    </script>
+</body>
+</html>
